@@ -1,27 +1,42 @@
 package com.example.FichaDePersonagemRPG.Player;
 
+import com.example.FichaDePersonagemRPG.Personagem.PersonagemMapper;
+import com.example.FichaDePersonagemRPG.Personagem.PersonagemResponseDTO;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PlayerMapper {
 
-    public PlayerModel map(PlayerDTO playerDTO) {
+    private final PersonagemMapper personagemMapper;
+
+    public PlayerMapper(PersonagemMapper personagemMapper) {
+        this.personagemMapper = personagemMapper;
+    }
+
+    public PlayerModel map(PlayerRequestDTO playerRequestDTO) {
         PlayerModel playerModel = new PlayerModel();
-        playerModel.setId(playerDTO.getId());
-        playerModel.setNome(playerDTO.getNome());
-        playerModel.setIdade(playerDTO.getIdade());
-        playerModel.setEmail(playerDTO.getEmail());
-        playerModel.setPersonagens(playerDTO.getPersonagens());
+        playerModel.setNome(playerRequestDTO.getNome());
+        playerModel.setIdade(playerRequestDTO.getIdade());
+        playerModel.setEmail(playerRequestDTO.getEmail());
         return playerModel;
     }
 
-    public PlayerDTO map(PlayerModel playerModel) {
-        PlayerDTO playerDTO = new PlayerDTO();
-        playerDTO.setId(playerModel.getId());
-        playerDTO.setNome(playerModel.getNome());
-        playerDTO.setIdade(playerModel.getIdade());
-        playerDTO.setEmail(playerModel.getEmail());
-        playerDTO.setPersonagens(playerModel.getPersonagens());
-        return playerDTO;
+    public PlayerResponseDTO map(PlayerModel playerModel) {
+        PlayerResponseDTO playerResponseDTO = new PlayerResponseDTO();
+        playerResponseDTO.setId(playerModel.getId());
+        playerResponseDTO.setNome(playerModel.getNome());
+        playerResponseDTO.setIdade(playerModel.getIdade());
+        playerResponseDTO.setEmail(playerModel.getEmail());
+
+        List<PersonagemResponseDTO> personagens = playerModel.getPersonagens()
+                .stream()
+                .map(personagemMapper::map)
+                .collect(Collectors.toList());
+
+        playerResponseDTO.setPersonagens(personagens);
+        return playerResponseDTO;
     }
 }
