@@ -11,6 +11,7 @@ public class PlayerMapper {
         playerModel.setNome(playerDTO.getNome());
         playerModel.setIdade(playerDTO.getIdade());
         playerModel.setEmail(playerDTO.getEmail());
+        playerModel.setPersonagens(playerDTO.getPersonagens());
         return playerModel;
     }
 
@@ -20,6 +21,7 @@ public class PlayerMapper {
         playerDTO.setNome(playerModel.getNome());
         playerDTO.setIdade(playerModel.getIdade());
         playerDTO.setEmail(playerModel.getEmail());
+        playerDTO.setPersonagens(playerModel.getPersonagens());
         return playerDTO;
     }
 }
